@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-
+import { nanoid } from 'nanoid'
 const INITIAL_STATE = {
   contacts: [],
   name: '',
@@ -10,14 +10,28 @@ class FormAddContacts extends Component {
     ...INITIAL_STATE,
   };
 
-  handleSubmit = evt => {
-    const { name, value } = evt.target;
-    evt.preventDefault();
-    console.log(evt.target);
+  handleSubmit = e => {
+    e.preventDefault();
+   
+    this.setState((prevState) => {
+      console.log(e);
+     
+      return {
+        contacts: [{name:[prevState.name]}],
+      }
+    });
+   
+   
   };
 
+  handleChange = e => {
+    const { name,value } = e.target;
+    this.setState({ [name]: value });
+    // this.setState({contacts: { [name]: value }});
+  }
 
   render() {
+    const { name} = this.state;
     return (
       <div className=''>
         <h1 className=''>Phonebook</h1>
@@ -25,7 +39,9 @@ class FormAddContacts extends Component {
           <label>
             <p className=''>Name</p>
             <input
+              onChange={this.handleChange}
               className=''
+              value={name}
               type="text"
               name="name"
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
